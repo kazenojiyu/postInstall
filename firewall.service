@@ -1,0 +1,13 @@
+[Unit]
+Description=Personal Firewall
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/root/bin/firewall.sh start
+ExecStop=/root/bin/firewall.sh stop
+User=root
+
+[Install]
+WantedBy=multi-user.target
