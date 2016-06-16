@@ -1,0 +1,45 @@
+ssl_certificate fullchain.pem;
+ssl_certificate_key privkey.pem;
+
+# redirect all non-www http request to www https
+server {
+  listen 80;
+  server_name www.domain.tld domain.tld;
+  return 301 https://www.domain.tld$request_uri;
+}
+# redirect all non-www https request to www https
+server {
+  listen 443 ssl;
+  server_name domain.tld;
+  return 301 https://www.domain.tld$request_uri;
+}
+
+server {
+	listen 443 ssl;
+
+	root /var/www/site;
+
+	index app.php index.php index.html index.htm;
+
+	server_name www.domain.tld;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+	}
+
+	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+	#
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+	}
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	#
+	location ~ /\.ht {
+		deny all;
+	}
+}
