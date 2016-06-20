@@ -1,0 +1,6 @@
+[Unit]
+Description=Dump database
+
+[Service]
+Type=simple
+ExecStart=/path/to/file.sh
