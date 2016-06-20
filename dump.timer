@@ -1,0 +1,10 @@
+[Unit]
+Description=Dump database every day
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1d
+Unit=dump.service
+
+[Install]
+WantedBy=multi-user.target
