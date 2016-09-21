@@ -1,15 +1,17 @@
-ssl_certificate /path/to/fullchain.pem;
-ssl_certificate_key /path/to/privkey.pem;
 
 server {
   listen 80;
   server_name www.domaine.tld domaine.tld;
   return 301 https://www.domaine.tld$request_uri;
+  ssl_certificate /path/to/fullchain.pem;
+  ssl_certificate_key /path/to/privkey.pem;
 }
 server {
   listen 443 ssl;
   server_name domaine.tld;
   return 301 https://www.domaine.tld$request_uri;
+  ssl_certificate /path/to/fullchain.pem;
+  ssl_certificate_key /path/to/privkey.pem;  
 }
 
 server {
@@ -20,6 +22,8 @@ server {
 	index app.php index.php index.html index.htm;
 
 	server_name www.domaine.tld;
+	ssl_certificate /path/to/fullchain.pem;
+	ssl_certificate_key /path/to/privkey.pem;
 
 	location / {
 		try_files $uri /app.php$is_args$args;
