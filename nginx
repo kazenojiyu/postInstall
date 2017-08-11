@@ -29,6 +29,10 @@ server {
 		try_files $uri /app.php$is_args$args;
 	}
 	
+        location ^~ /.well-known/acme-challenge/ {
+                alias /var/www/html/.well-known/acme-challenge/;
+        }
+	
 	location ~ ^/(app|app_dev|opcache-.*)\.php(/|$) {
         	fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
         	fastcgi_split_path_info ^(.+\.php)(/.*)$;
@@ -37,6 +41,16 @@ server {
         	fastcgi_param DOCUMENT_ROOT $realpath_root;
 		internal;
 	}
+	
+        location ~ /\. {
+                deny all;
+        }
+
+	location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+                expires max;
+                log_not_found off;
+        }
+
 	
 	location ~ \.php$ {
 		return 404;
